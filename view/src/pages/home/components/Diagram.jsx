@@ -49,4 +49,6 @@ const DiagramComponent = (props) => {
   );
 };
 
+// custom node: https://antonioru.github.io/beautiful-react-diagrams/#/Customisation
+
 export default DiagramProvider;

@@ -31,7 +31,11 @@ export const prepareDiagramSchema = (objectOfWorkers) => {
   arrOfWorkers.forEach((item,index) => {
     const node = {
       id: `${item.idWorker}`,
-      content: item.name,
+      content:
+        `name: ${item.name} ${item.lastName}
+
+workerCode: ${item.workerCode}
+`,
       coordinates: [index * lengthBetweenNodes, 200],
     };
     const link = { input: title, output: `${item.idWorker}` };

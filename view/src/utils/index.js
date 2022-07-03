@@ -14,3 +14,29 @@ export const groupWorkersListByPosition = (positionsList, workers) => {
   return groupedWorkersList;
 }
 
+/**
+ * 
+ * @param {array} objectOfWorkers 
+ */
+export const prepareDiagramSchema = (objectOfWorkers) => {
+  const title = Object.keys(objectOfWorkers)[0];
+  const arrOfWorkers = objectOfWorkers[title];
+  const lengthArr = arrOfWorkers.length;
+  const lengthBetweenNodes = 150;
+  const fullLengthNodes = (lengthArr - 1) * lengthBetweenNodes;
+  const centerLength = fullLengthNodes / 2;
+  const schema = {};
+  schema.nodes = [{ id: title, content: title, coordinates: [centerLength, 60] }];
+  schema.links = [];
+  arrOfWorkers.forEach((item,index) => {
+    const node = {
+      id: `${item.idWorker}`,
+      content: item.name,
+      coordinates: [index * lengthBetweenNodes, 200],
+    };
+    const link = { input: title, output: `${item.idWorker}` };
+    schema.nodes.push(node);
+    schema.links.push(link);
+  })
+  return schema;
+}

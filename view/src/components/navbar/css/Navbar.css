@@ -1,0 +1,40 @@
+.navbar {
+  height: 50px;
+  background-color: #e3d985;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+}
+.navbar .list {
+  margin-left: 4.5vw;
+  display: flex;
+  gap: 0 30px;
+  width: 40%;
+  list-style: none;
+}
+.navbar .list .list-item {
+  font-size: 20px;
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 6px;
+  z-index: 1;
+}
+.navbar .list .list-item::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  transform: translate(-100%, -10px);
+  background-color: #e57a44;
+  transition: transform 0.19s linear;
+  z-index: -1;
+}
+.navbar .list .list-item:hover::after {
+  transform: translate(0, -10px);
+}/*# sourceMappingURL=Navbar.css.map */

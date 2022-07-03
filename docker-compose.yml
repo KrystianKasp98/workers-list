@@ -27,7 +27,7 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
-  # nie wiem jak zrobic hotreaload wiec te ponizsze serwisy musze miec zakomentowane kiedy chce cos developowac ale kiedy chce odpalic serwer na dockerze musze je odkomentowac i to bedzie dobrze banglac xd
+  # disable below services for developing all of them
   # elasticsearch-service:
   #   build: "./elasticsearchAPI"
   #   volumes:

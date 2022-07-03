@@ -1,0 +1,23 @@
+.title {
+  text-align: center;
+  position: relative;
+  color: #e57a44;
+  display: inline-block;
+  left: 50%;
+  margin-top: 80px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+.title::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 80%;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0 auto;
+  z-index: -1;
+  height: 20px;
+  background-color: #e3d985;
+}/*# sourceMappingURL=titlepage.css.map */

@@ -1,0 +1,101 @@
+[
+  {
+    "idWorker": 1,
+    "name": "David",
+    "lastName": "Work",
+    "position": "warehouseman",
+    "workerCode": "w-cxfff2",
+    "startOfWork": "8:00",
+    "endOfWork": "16:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  },
+  {
+    "idWorker": 2,
+    "name": "Robert",
+    "lastName": "Pork",
+    "position": "warehouseman",
+    "workerCode": "w-cxffee",
+    "startOfWork": "8:00",
+    "endOfWork": "16:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  },
+  {
+    "idWorker": 3,
+    "name": "Dave",
+    "lastName": "Nork",
+    "position": "warehouseman",
+    "workerCode": "w-cxfff9",
+    "startOfWork": "8:00",
+    "endOfWork": "16:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  },
+  {
+    "idWorker": 4,
+    "name": "Sab",
+    "lastName": "Stein",
+    "position": "warehouseman",
+    "workerCode": "w-cxfdd2",
+    "startOfWork": "8:00",
+    "endOfWork": "16:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  },
+  {
+    "idWorker": 5,
+    "name": "Gabriel",
+    "lastName": "Losten",
+    "position": "warehouseman",
+    "workerCode": "w-cxcee2",
+    "startOfWork": "8:00",
+    "endOfWork": "16:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  },
+  {
+    "idWorker": 6,
+    "name": "Ron",
+    "lastName": "Guil",
+    "position": "officeworker",
+    "workerCode": "o-fxfff2",
+    "startOfWork": "7:00",
+    "endOfWork": "15:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  },
+  {
+    "idWorker": 7,
+    "name": "Albert",
+    "lastName": "Hopkins",
+    "position": "officeworker",
+    "workerCode": "o-ffbbf9",
+    "startOfWork": "7:00",
+    "endOfWork": "15:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  },
+  {
+    "idWorker": 8,
+    "name": "Jessy",
+    "lastName": "Redman",
+    "position": "officeworker",
+    "workerCode": "o-fxxxf2",
+    "startOfWork": "7:00",
+    "endOfWork": "15:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  },
+  {
+    "idWorker": 9,
+    "name": "Angela",
+    "lastName": "Hireboss",
+    "position": "HR",
+    "workerCode": "h-x00001",
+    "startOfWork": "9:00",
+    "endOfWork": "17:00",
+    "createdAt": "2022-07-01T14:01:31.000Z",
+    "updatedAt": "2022-07-01T14:01:31.000Z"
+  }
+]

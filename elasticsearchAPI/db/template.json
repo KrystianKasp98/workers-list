@@ -1,0 +1,13 @@
+{
+  "workerCode": "w-cxfff2",
+  "position": "warehouseman",
+  "workingHours": {
+    "start": "8:00",
+    "end": "16:00"
+  },
+  "attendance": {
+    "start": "7:55",
+    "end": "16:03"
+  },
+  "date": "2022-06-14T22:06:09.025Z < new Date().toISOString() >"
+}

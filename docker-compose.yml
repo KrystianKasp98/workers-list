@@ -1,0 +1,63 @@
+version: '3.7'
+services:
+  mysql:
+    image: mysql:8
+    ports:
+      - 3306:3306
+    volumes:
+      - ~/apps/mysql:/var/lib/mysql #zeby wbic na db w dockerze to musisz tam poszukac jak sie  wchodzic do kontenera dockera a pozniej wejsc do tej sciezki /var/lib/mysq i wpisac komende mysql -uroot -pS3ret 
+      #https://phoenixnap.com/kb/connect-to-mysql-windows-command-line
+      #https://www.ibm.com/docs/en/workload-automation/9.5.0?topic=compose-accessing-docker-containers
+    environment:
+      - MYSQL_ROOT_PASSWORD=S3cret
+      - MYSQL_PASSWORD=An0thrS3crt
+      - MYSQL_USER=citizix_user
+      - MYSQL_DATABASE=citizix_db
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+    ports:
+      - "9200:9200"
+    environment:
+      discovery.type: single-node
+      ES_NO_CLUSTER: "true"
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.4
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+  # nie wiem jak zrobic hotreaload wiec te ponizsze serwisy musze miec zakomentowane kiedy chce cos developowac ale kiedy chce odpalic serwer na dockerze musze je odkomentowac i to bedzie dobrze banglac xd
+  # elasticsearch-service:
+  #   build: "./elasticsearchAPI"
+  #   volumes:
+  #     - ./elasticsearchAPI:/home/node/app
+  #   ports:
+  #     - 8001:8001
+  #   depends_on:
+  #     - elasticsearch
+  # mysql-service:
+  #   build: "./mysqlAPI"
+  #   volumes:
+  #     - ./mysqlAPI:/home/node/app
+  #   ports:
+  #     - 8000:8000
+  #   depends_on:
+  #     - mysql
+  # view:
+  #   container_name: view
+  #   build: "./view"
+  #   volumes:
+  #     - './:/app'
+  #     - '/app/node_modules'
+  #   ports:
+  #     - 3000:3000
+  #   stdin_open: true
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #   command: npm start
+  #   depends_on:
+  #     - mysql
+  #     - elasticsearch
+  #     - elasticsearch-service
+  #     - mysql-service

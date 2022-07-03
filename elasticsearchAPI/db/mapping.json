@@ -1,0 +1,19 @@
+{
+  "properties": {
+    "workerCode": {
+      "type": "text"
+    },
+    "position": {
+      "type":"text"
+    },
+    "workingHours": {
+      "type":"object"
+    },
+    "attendance": {
+      "type":"object"
+    },
+    "date": {
+      "type": "date"
+    }
+  }
+}

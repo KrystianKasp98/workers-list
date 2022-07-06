@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import "beautiful-react-diagrams/styles.css";
 import Diagram, { createSchema, useSchema } from "beautiful-react-diagrams";
 
@@ -8,29 +8,44 @@ import {
   prepareDiagramSchema,
 } from "../../../utils/index";
 
+import "./css/Diagram.sass"
+
 // the diagram model
 
 const DiagramProvider = () => {
   const [workers, setWorkers] = useState([]);
-  const [initialSchema, setInitialSchema] = useState(false);
+  const [isWorkersFetched, setIsWorkersFetched] = useState(false);
 
   useEffect(() => {
     const main = async () => {
       const workersList = await MySqlApi.getWorkers();
       const positionsList = await MySqlApi.getPositions();
       const workers = groupWorkersListByPosition(positionsList, workersList);
-
-      const wh = prepareDiagramSchema({ warehouseman: workers.warehouseman });//preapare diagrams for other positions, do refactor and descriptuon fucntion in utlis
-      setInitialSchema(wh);
-
-      console.log(wh);
+      setIsWorkersFetched(true);
       setWorkers(workers);
     };
     main();
   }, []);
+
+  const prepareDiagrams = () => {
+    if (!isWorkersFetched) return null;
+    const keys = Object.keys(workers).map((key, index) => key);
+    const values = Object.values(workers).map((val, index) => val);
+    console.log({ keys });
+    console.log({values});
+    console.log('res:=>', workers)
+    const workerMapped = keys.map((item, index) => {
+      const objectOfWorkers = {};
+      objectOfWorkers[item] = values[index];
+      const initialSchemal = prepareDiagramSchema(objectOfWorkers);
+      return <DiagramComponent initialSchema={initialSchemal} />
+    }).reverse();
+    return workerMapped
+  }
+  
   return (
-    <div>
-      { initialSchema && <DiagramComponent initialSchema={initialSchema} />}
+    <div className="diagram-box">
+      {prepareDiagrams()}
     </div>
   )
 };
@@ -43,12 +58,10 @@ const DiagramComponent = (props) => {
   const [schema, { onChange }] = useSchema(initialSchema);
 
   return (
-    <div style={{ height: "22.5rem" }}>
+    <div style={{ height: "22.5rem", width: "1000px" }} className="test">
       <Diagram schema={schema} onChange={onChange} />
     </div>
   );
 };
-
-// custom node: https://antonioru.github.io/beautiful-react-diagrams/#/Customisation
 
 export default DiagramProvider;

@@ -1,3 +1,5 @@
+import { diagram } from "./consts";
+
 /**
  * 
  * @param {array} positionsList 
@@ -22,23 +24,21 @@ export const prepareDiagramSchema = (objectOfWorkers) => {
   const title = Object.keys(objectOfWorkers)[0];
   const arrOfWorkers = objectOfWorkers[title];
   const lengthArr = arrOfWorkers.length;
-  const lengthBetweenNodes = 150;
-  const fullLengthNodes = (lengthArr - 1) * lengthBetweenNodes;
-  const centerLength = fullLengthNodes / 2;
+  const lengthBetweenNodes = diagram.fullLength/lengthArr;
+  const centerLength = diagram.positionName.x;
   const schema = {};
-  schema.nodes = [{ id: title, content: title, coordinates: [centerLength, 60] }];
+  schema.nodes = [{ id: title, content: title, coordinates: [centerLength, diagram.positionName.y] }];
   schema.links = [];
   arrOfWorkers.forEach((item,index) => {
     const node = {
       id: `${item.idWorker}`,
-      content:
-        `name: ${item.name} ${item.lastName}
-
-workerCode: ${item.workerCode}
-`,
-      coordinates: [index * lengthBetweenNodes, 200],
+      content:`${item.workerCode}`,
+      coordinates: [index * lengthBetweenNodes + 50, 200],
     };
     const link = { input: title, output: `${item.idWorker}` };
+    if (arrOfWorkers.length === 1) {
+      node.coordinates[0] = centerLength;
+    }
     schema.nodes.push(node);
     schema.links.push(link);
   })

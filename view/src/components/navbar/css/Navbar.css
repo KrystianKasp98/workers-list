@@ -3,6 +3,7 @@
   background-color: #e3d985;
   width: 100%;
   position: fixed;
+  z-index: 1000;
   top: 0;
   display: flex;
   align-items: center;
@@ -37,4 +38,4 @@
 }
 .navbar .list .list-item:hover::after {
   transform: translate(0, -10px);
-}/*# sourceMappingURL=Navbar.css.map */
+}/*# sourceMappingURL=navbar.css.map */

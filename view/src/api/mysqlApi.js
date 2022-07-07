@@ -12,6 +12,13 @@ export default class MySqlApi{
     return api
       .get(`http://localhost:8000/workers/positions`)
       .set("accept", "json")
-      .then((res) => res.body.positions);
+      .then(res => res.body.positions);
+  }
+
+  static deleteWorker(workerCode) {
+    return api
+      .delete(`http://localhost:8000/workers/${workerCode}`)
+      .set("accept", "json")
+      .then(res => res.body)
   }
 }

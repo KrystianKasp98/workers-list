@@ -2,13 +2,13 @@ import React,{ useEffect, useState } from "react";
 import "beautiful-react-diagrams/styles.css";
 import Diagram, { createSchema, useSchema } from "beautiful-react-diagrams";
 
-import MySqlApi from "../../../api/mysqlApi";
+import MySqlApi from "../../../../api/mysqlApi";
 import {
   groupWorkersListByPosition,
   prepareDiagramSchema,
-} from "../../../utils/index";
+} from "../../../../utils/index";
 
-import "./css/Diagram.sass"
+import "./css/diagram.sass"
 
 // the diagram model
 

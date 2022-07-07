@@ -1,0 +1,26 @@
+[
+      {
+        "Header": "Name",
+        "accessor": "name"
+      },
+      {
+        "Header": "Lastname",
+        "accessor": "lastName"
+      },
+      {
+        "Header": "Position",
+        "accessor": "position"
+      },
+      {
+        "Header": "Worker-code",
+        "accessor": "workerCode"
+      },
+      {
+        "Header": "Start work",
+        "accessor": "startOfWork"
+      },
+      {
+        "Header": "End work",
+        "accessor": "endOfWork"
+      }
+]

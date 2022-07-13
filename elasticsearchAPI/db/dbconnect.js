@@ -1,5 +1,5 @@
 // module.exports
-const { handleDeletePropertyFromObject } = require("../../utils/index");
+const { handleDeletePropertyFromObject, sleep } = require("../../utils/index");
 const { Client } = require("@elastic/elasticsearch");
 const mappings = require("./mapping.json");
 const superagent = require("superagent");
@@ -8,6 +8,7 @@ class Elastic {
   constructor() {
     this.init();
   }
+
   init() {
     this.client = new Client({
       // node: `http://elasticsearch`,//it's for docker
@@ -17,12 +18,13 @@ class Elastic {
     this.ajax = superagent;
     this.lastprepredIndex = false;
   }
-  async prepareIndex() {
-    const index = `${this.indexName}${prep().toISOString().split("T")[0]}`;
-    return index;
+
+  prepareIndex() {
+    return `${this.indexName}${new Date().toISOString().split("T")[0]}`;
   }
+
   async createIndex() {
-    const index = await this.prepareIndex();
+    const index = this.prepareIndex();
     let result = true;
     this.client.indices.exists({ index }, async (err, res, status) => {
       if (res.body) {
@@ -31,14 +33,15 @@ class Elastic {
       } else {
         console.log(res);
         const body = mappings;
-        console.log("index===>", index);
         await this.client.indices.create({ index });
         await this.client.indices.putMapping({ index, body });
+        await sleep(2000);
         await this.createWorkersList();
         return result;
       }
     });
   }
+
   async createWorkersList() {
     const mySqlApiUrl = "http://localhost:8000/workers";
     const workersList = await this.ajax
@@ -49,6 +52,12 @@ class Elastic {
     const mappedWorkersList = this.mapWorkersList(workersList);
     this.addBulkWorkersDocument(mappedWorkersList);
   }
+
+  /**
+   *
+   * @param {array} workersList
+   * @returns {array} Returns mapped array of workers from mySql service
+   */
   mapWorkersList(workersList) {
     return workersList.map((workerDocument) => ({
       workerCode: workerDocument.workerCode,
@@ -64,8 +73,14 @@ class Elastic {
       date: new Date().toISOString(),
     }));
   }
+
+  /**
+   *
+   * @param {array} dataset
+   * this function add WorkersDocument in bulk
+   */
   async addBulkWorkersDocument(dataset) {
-    const index = await this.prepareIndex(); //here problem occured because i tried to pass await as _index value
+    const index = this.prepareIndex(); //here problem occured because i tried to pass await as _index value
     const body = dataset.flatMap((doc) => [{ index: { _index: index } }, doc]);
     const { body: bulkResponse } = await this.client.bulk({
       refresh: true,
@@ -74,10 +89,15 @@ class Elastic {
     console.log(bulkResponse);
   }
 
-  //if someone add user to mysql db, this function will run
+  /**
+   *
+   * @param {object} body
+   * this function add worker document to elasticsearch base, if someone add user to mysql db, this function will run
+   * @returns {boolean} result of adding worker document
+   */
   async addWorkerDocument(body) {
-    const index = await this.prepareIndex();
-    body = this.mappedWorkersList([body]);
+    const index = this.prepareIndex();
+    body = this.mapWorkersList([body]);
     body = body[0];
     return await this.client
       .index({
@@ -89,25 +109,27 @@ class Elastic {
       .then((res) => true)
       .catch((err) => false);
   }
-  async updateWorkerDocument(body) {
+
+  /**
+   *
+   * @param {object} body
+   * @param {null | string} index this function update worker document in elasticsearch base, if index passed it's possible to update document older than today
+   * @returns {boolean} result of updating worker document
+   */
+  async updateWorkerDocument(body, index = null) {
     const { workerCode } = body;
-    console.log("body==>>", body);
-    console.log("workerCode=>>", workerCode);
     const workerList = await this.getWorkersList();
     const workerDocument = workerList.filter(
       (worker) => worker._source.workerCode === workerCode
     );
-    console.log("id =>>", workerDocument[0]);
     if (!workerDocument.length) {
       return false;
     }
-    console.log("list after change", workerDocument);
     body = handleDeletePropertyFromObject(["workerCode"], body);
-    console.log("body after change ==>", body);
     const mappedBody = {
       doc: body,
     };
-    const index = await this.prepareIndex();
+    index = index ? index : this.prepareIndex();
     return await this.client
       .update({
         index: index,
@@ -123,8 +145,14 @@ class Elastic {
         return false;
       });
   }
-  async getWorkersList() {
-    const index = await this.prepareIndex();
+
+  /**
+   *
+   * @param {null | string | array<string>} index if null returns all transactions, string returns 1 index, arr returns 1`or more indexes
+   * @returns {array<object>} return arr of workers documents
+   */
+  async getWorkersList(index = null) {
+    index = index ? index : this.prepareIndex();
 
     const result = await this.client.search({
       index,
@@ -137,8 +165,14 @@ class Elastic {
 
     return result.body.hits.hits;
   }
+
+  /**
+   *
+   * @param {string} workerCode
+   * @returns {boolean} @returns {boolean} result of deleting worker document
+   */
   async deleteWorkerDocument(workerCode) {
-    const index = await this.prepareIndex();
+    const index = this.prepareIndex();
     return await this.client
       .delete({
         index,

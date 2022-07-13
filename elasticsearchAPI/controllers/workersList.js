@@ -17,7 +17,6 @@ exports.getWorkersList = async (req, res) => {
       }
       setTimeout(async () => {
         const workersList = await elastic.getWorkersList();
-        console.log(workersList);
         if (!workersList?.length) {
           return res.status(200).json({
             workersList: [],

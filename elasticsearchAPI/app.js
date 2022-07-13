@@ -3,6 +3,7 @@ const { json, urlencoded } = require("body-parser");
 const cors = require("cors");
 const Elastic = require("./db/dbconnect");
 const workerslistRoute = require('./routes/workersList');
+const { resetAtMidnight } = require('../utils/index');
 
 const elastic = new Elastic();
 const app = express();
@@ -22,6 +23,9 @@ app.use(urlencoded({ extended: true }));
 //   }
 // });
 app.use("/workers-list", workerslistRoute);
+
+elastic.createIndex();
+resetAtMidnight(elastic.createIndex);
 
 
 module.exports = app;

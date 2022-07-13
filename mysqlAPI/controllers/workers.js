@@ -3,6 +3,7 @@ const {
   handleDeletePropertyFromObject,
   generateWorkerCode
 } = require("../../utils/index");
+const superagent = require("superagent");
 const Worker = require("../models/workers");
 
 exports.getAllWorkers = async (req, res) => {
@@ -71,7 +72,6 @@ exports.deleteWorker = async (req, res) => {
     async () => {
       const { id } = req.params;
       const deletedWorker = await Worker.destroy({ where: { workerCode: id } });
-      console.log(deletedWorker);
       if (!deletedWorker) {
         return res.status(404).json({
           message: `worker with workerCode: ${id} not found in database`,
@@ -90,16 +90,9 @@ exports.deleteWorker = async (req, res) => {
 exports.postWorker = async (req, res) => {
   handleRequestAPI(
     async () => {
-      const { name, lastName, position, startOfWork, endOfWork } =
-        req.body;
-      console.log({...req.body});
-      if (
-        !name ||
-        !lastName ||
-        !position ||
-        !startOfWork ||
-        !endOfWork
-      ) {
+      const { name, lastName, position, startOfWork, endOfWork } = req.body;
+      console.log({ ...req.body });
+      if (!name || !lastName || !position || !startOfWork || !endOfWork) {
         return res.status(409).json({
           message: `can't add worker, name, lastName, position, workerCode, startOfWork, endOfWork is required`,
         });
@@ -114,6 +107,9 @@ exports.postWorker = async (req, res) => {
         startOfWork,
         endOfWork,
       });
+      //http://localhost:8001/workers-list/${workerCode}
+      await superagent.post(`http://localhost:8001/workers-list/${workerCode}`)
+        .send({workerCode, position, startOfWork, endOfWork});
       return res.status(201).json({
         message: `Worker ${workerCode} has been added`,
         worker: {
@@ -141,19 +137,37 @@ exports.updateWorker = async (req, res) => {
           message: `worker with workerCode: ${id} not found in database`,
         });
       }
+      const { name, lastName, position, startOfWork, endOfWork } = worker;
       let body = { ...req.body };
       body = handleDeletePropertyFromObject(['id', 'workerCode'], body);
       
-      Worker.update(
+      await Worker.update(
         { body },
-        {where:{workerCode: id}}
-      ).then(result => res.status(200).send({
-        message: `worker(${id}) has been successfully updated`
-      })).catch(error => {
-        res.status(400).send({
-          message: `failed to update worker(${id})`
-        })
-      })
+        { where: { workerCode: id } }
+      );
+
+      await superagent
+        .post(`http://localhost:8001/workers-list/${workerCode}`)
+        .send({ workerCode, position, startOfWork, endOfWork });
+      
+      return res.status(201).json({
+        message: `Worker ${workerCode} has been added`,
+        worker: {
+          name,
+          lastName,
+          position,
+          workerCode,
+          startOfWork,
+          endOfWork,
+        },
+      });
+      //.then(result => res.status(200).send({
+      //   message: `worker(${id}) has been successfully updated`
+      // })).catch(error => {
+      //   res.status(400).send({
+      //     message: `failed to update worker(${id})`
+      //   })
+      // })
 
     },req,res
   )

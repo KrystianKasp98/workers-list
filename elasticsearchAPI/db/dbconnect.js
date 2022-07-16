@@ -31,7 +31,7 @@ class Elastic {
         console.log("index already exist");
         return !result;
       } else {
-        console.log(res);
+        console.log('creating new index...',res);
         const body = mappings;
         await this.client.indices.create({ index });
         await this.client.indices.putMapping({ index, body });

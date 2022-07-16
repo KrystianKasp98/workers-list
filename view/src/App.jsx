@@ -6,6 +6,7 @@ import Home from "./pages/home/Home";
 import Presence from "./pages/presence/Presence";
 import Error from "./pages/error/Error";
 import Workers from "./pages/workers/Workers";
+import UpdateWorker from "./pages/workers/components/update/UpdateWorker";
 
 function App() {
   return (
@@ -14,7 +15,10 @@ function App() {
         <Navbar/>  
         <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/workers" element={<Workers/>} />
+          <Route path="/workers">
+            <Route path="update/:workerCode" element={<UpdateWorker/>} />
+            <Route path="" element={<Workers />} />
+          </Route>
           <Route path="/presence" element={<Presence/>} />
           <Route path="*" element={<Error/>} />
         </Routes>

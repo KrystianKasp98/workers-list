@@ -53,6 +53,7 @@ exports.getOneWorker = async (req, res) => {
     async () => {
       const { id } = req.params;
       const worker = await Worker.findOne({ where: { workerCode: id } });
+      console.log({worker});
       if (!worker) {
         return res.status(404).json({
           message: `worker with workerCode: ${id} not found in database`
@@ -140,23 +141,24 @@ exports.updateWorker = async (req, res) => {
       const { name, lastName, position, startOfWork, endOfWork } = worker;
       let body = { ...req.body };
       body = handleDeletePropertyFromObject(['id', 'workerCode'], body);
-      
+      console.log({body});
+      console.log({worker});
       await Worker.update(
-        { body },
-        { where: { workerCode: id } }
-      );
+        { ...body },
+        { where: { idWorker: worker.idWorker } }
+      );//proble did't update worker
 
       await superagent
-        .post(`http://localhost:8001/workers-list/${workerCode}`)
-        .send({ workerCode, position, startOfWork, endOfWork });
+        .post(`http://localhost:8001/workers-list/${id}`)
+        .send({ workerCode: id, position, startOfWork, endOfWork });
       
       return res.status(201).json({
-        message: `Worker ${workerCode} has been added`,
+        message: `Worker ${id} has been added`,
         worker: {
           name,
           lastName,
           position,
-          workerCode,
+          workerCode: id,
           startOfWork,
           endOfWork,
         },
